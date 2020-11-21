@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 300 14px/25px 'Roboto';
+}
+
+h2 {
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 42px;
+  color: $dark;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
