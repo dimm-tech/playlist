@@ -57,7 +57,18 @@ export default {
   },
   methods: {
     menuToggle() {
-      document.querySelector(".nav").classList.toggle("close");
+      let nav = document.querySelector(".nav")
+      nav.classList.toggle("close");
+
+      function listener(e) {
+        if(!document.querySelector('header').contains(e.target)) {
+          nav.classList.add("close");
+        }
+      }
+
+      if(!nav.classList.contains('close')) {
+        document.addEventListener('click', listener)
+      } 
     },
   },
 };

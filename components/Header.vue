@@ -22,6 +22,6 @@ export default {
 <style lang="scss">
 header {
   width: 100%;
-  padding: 19px 9px 20px 11px;
+  padding: 20px 10px 20px 10px;
 }
 </style>
