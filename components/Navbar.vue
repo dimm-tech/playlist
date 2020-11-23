@@ -58,7 +58,9 @@ export default {
 
       if(!nav.classList.contains('close')) {
         document.addEventListener('click', listener)
-      } 
+      } else {
+          document.removeEventListener('click', listener)
+        }
     },
   },
 };

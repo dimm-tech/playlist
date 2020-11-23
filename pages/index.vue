@@ -32,7 +32,65 @@
           onmousedown="return false"
           @click="openSelect"
         >
+          <option class="optgroup" value="Все проекты">Все проекты</option>
+          <option v-for="item in department" :key="item.id" :value="item.title">
+            {{ item.title }}
+          </option>
+        </select>
+        <ul class="select">
+          <li v-for="item of department" :key="item.id">
+            <a @click.prevent="clickOption" href="#">{{ item.title }}</a>
+            <span>{{ item.num }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="select-wrapper">
+        <span class="arrow">
+          <svg
+            width="11"
+            height="7"
+            viewBox="0 0 11 7"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M10 1L5.5 5.5L1 1" stroke="#00BEDB" stroke-width="2" />
+          </svg>
+        </span>
+        <select
+          name="department"
+          onmousedown="return false"
+          @click="openSelect"
+        >
           <option class="optgroup" value="Отрасль">Отрасль</option>
+          <option v-for="item in department" :key="item.id" :value="item.title">
+            {{ item.title }}
+          </option>
+        </select>
+        <ul class="select">
+          <li v-for="item of department" :key="item.id">
+            <a @click.prevent="clickOption" href="#">{{ item.title }}</a>
+            <span>{{ item.num }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="select-wrapper">
+        <span class="arrow">
+          <svg
+            width="11"
+            height="7"
+            viewBox="0 0 11 7"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M10 1L5.5 5.5L1 1" stroke="#00BEDB" stroke-width="2" />
+          </svg>
+        </span>
+        <select
+          name="department"
+          onmousedown="return false"
+          @click="openSelect"
+        >
+          <option class="optgroup" value="Назначение">Назначение</option>
           <option v-for="item in department" :key="item.id" :value="item.title">
             {{ item.title }}
           </option>
@@ -62,7 +120,7 @@ export default {
   },
   methods: {
     openSelect(e) {
-      e.target.value = e.target.querySelector('.optgroup').value
+      e.target.value = e.target.querySelector(".optgroup").value;
       e.target.parentNode.classList.toggle("open");
     },
     clickOption(e) {
@@ -70,11 +128,19 @@ export default {
         if (el.parentNode.classList.value.includes("select-wrapper")) {
           return el.parentNode;
         } else {
-          return selectParent(el.parentNode)
+          return selectParent(el.parentNode);
         }
       }
-      selectParent(e.target).classList.toggle("open")
-      selectParent(e.target).querySelector('select').value = e.target.innerHTML 
+      let trgt = e.target;
+      let nativeSelect = selectParent(trgt).querySelector("select");
+      selectParent(trgt).classList.toggle("open");
+      nativeSelect.value = trgt.innerHTML;
+      for (let [key, opt] of Object.entries(nativeSelect)) {
+        if (opt.innerHTML.trim() == trgt.innerHTML.trim()) {
+          nativeSelect.setAttribute("selectedIndex", key);
+          opt.setAttribute("selected", true);
+        }
+      }
     },
   },
 };
@@ -110,6 +176,10 @@ export default {
   margin: 0 10px;
   .select-wrapper {
     position: relative;
+    margin-bottom: 10px;
+    &:last-child {
+      margin-bottom: 0;
+    }
     .arrow svg {
       width: 11px;
       height: 7px;
