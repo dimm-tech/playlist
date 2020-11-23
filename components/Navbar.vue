@@ -23,7 +23,7 @@
       <nav>
         <ul>
           <li v-for="page in pages" :key="page.link">
-            <a @click.prevent :href="'/' + page.link">{{page.title}}</a>
+            <a @click.prevent :href="'/' + page.link">{{ page.title }}</a>
           </li>
         </ul>
       </nav>
@@ -42,26 +42,37 @@ export default {
   },
   computed: {
     pages() {
-      return this.$store.state.pages.list
-    }
+      return this.$store.state.pages.list;
+    },
   },
   methods: {
     menuToggle() {
-      let nav = document.querySelector(".nav")
-      nav.classList.toggle("close");
-
+      let nav = document.querySelector(".nav");
       function listener(e) {
-        if(!document.querySelector('header').contains(e.target)) {
-          nav.classList.add("close");
-        }
+        nav.classList.add("close");
+        document.querySelector(".space").remove();
       }
 
-      if(!nav.classList.contains('close')) {
-        document.addEventListener('click', listener)
-      } else {
-          document.removeEventListener('click', listener)
-        }
-    },
+      nav.classList.toggle("close");
+      if (!nav.classList.contains("close")) {
+        console.log("close");
+        let space = document.createElement("div");
+        space.classList.add("space");
+        space.style.cssText = `
+          width: 100%;
+          height: ${document.querySelector('body').clientHeight}px;
+          position: absolute;
+          background-color: rgba(0, 0, 0, 0);
+        `;
+        document
+          .querySelector("header")
+          .insertAdjacentElement("beforeBegin", space);
+        space.addEventListener("click", listener);
+      } 
+      else {
+        document.querySelector(".space").remove();
+      }
+    }
   },
 };
 </script>

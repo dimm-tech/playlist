@@ -29,7 +29,7 @@ address {
       background-image: url("~assets/img/icon-phone.svg");
       background-size: cover;
       background-position: center;
-      width: 11px;
+      width: 12px;
       height: 16px;
       position: absolute;
       left: -19px;
@@ -48,7 +48,7 @@ address {
       position: absolute;
       left: -22px;
       top: 50%;
-      margin-top: -6.5px;
+      margin-top: -6px;
     }
   }
 }
