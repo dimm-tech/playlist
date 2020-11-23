@@ -22,23 +22,8 @@
       </div>
       <nav>
         <ul>
-          <li>
-            <a href="/portfolio">Портфолио</a>
-          </li>
-          <li>
-            <a href="/blog">Блог</a>
-          </li>
-          <li>
-            <a href="/services">Услуги</a>
-          </li>
-          <li>
-            <a href="/price">Цены</a>
-          </li>
-          <li>
-            <a href="/team">Команда</a>
-          </li>
-          <li>
-            <a href="/contacts">Контакты</a>
+          <li v-for="page in pages" :key="page.link">
+            <a @click.prevent :href="'/' + page.link">{{page.title}}</a>
           </li>
         </ul>
       </nav>
@@ -54,6 +39,11 @@ import Address from "@/components/Address";
 export default {
   components: {
     Address,
+  },
+  computed: {
+    pages() {
+      return this.$store.state.pages.list
+    }
   },
   methods: {
     menuToggle() {
@@ -104,6 +94,7 @@ export default {
     padding: 18px 10px 0 14px;
     h2 {
       flex-grow: 2;
+      margin: 0;
     }
   }
   .nav__logo {
