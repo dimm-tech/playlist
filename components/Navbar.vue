@@ -1,19 +1,11 @@
 <template>
-  <div>
-    <div class="burger" @click="menuToggle">
-      <span></span>
-      <span></span>
-      <span></span>
+  <div>  
+    <div class="burger-wrapper">
+      <Burger @navToggle="toggle" ref="Burger" />
     </div>
-    <div class="nav close">
-      <div class="nav__row flex">
-        <img
-          class="nav__close"
-          src="~assets/img/icon-close.svg"
-          alt="close menu"
-          @click="menuToggle"
-        />
-        <h2>Меню</h2>
+    <div class="nav">
+      <div class="nav__header flex">
+        <p>Меню</p>
         <img
           class="nav__logo"
           src="~assets/img/logo-avatar.svg"
@@ -35,65 +27,52 @@
 </template>
 
 <script>
-import Address from "@/components/Address";
+import Burger from '@/components/Burger'
+import Address from '@/components/Address'
 export default {
   components: {
+    Burger,
     Address,
   },
   computed: {
     pages() {
-      return this.$store.state.pages.list;
+      return this.$store.state.list
     },
   },
   methods: {
-    menuToggle() {
-      let nav = document.querySelector(".nav");
-      function listener(e) {
-        nav.classList.add("close");
-        document.querySelector(".space").remove();
+    open() {
+      document.querySelector('.nav').classList.add('open')
+      document.addEventListener('click', this.clickListener)
+    },
+    close() {
+      document.querySelector('.nav').classList.remove('open')
+      document.removeEventListener('click', this.clickListener)
+    },
+    toggle() {
+      if (document.querySelector('.nav').classList.contains('open')) {
+        this.close()
+      } else {
+        this.open()
       }
-
-      nav.classList.toggle("close");
-      if (!nav.classList.contains("close")) {
-        console.log("close");
-        let space = document.createElement("div");
-        space.classList.add("space");
-        space.style.cssText = `
-          width: 100%;
-          height: ${document.querySelector('body').clientHeight}px;
-          position: absolute;
-          background-color: rgba(0, 0, 0, 0);
-        `;
-        document
-          .querySelector("header")
-          .insertAdjacentElement("beforeBegin", space);
-        space.addEventListener("click", listener);
-      } 
-      else {
-        document.querySelector(".space").remove();
+    },
+    clickListener(e) {
+      if (!document.querySelector('header').contains(e.target)) {
+        this.$refs.Burger.close()
+        this.close()
       }
-    }
+    },
   },
-};
+}
 </script>
 
-<style lang="scss">
-.burger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 25px;
-  height: 19px;
-  margin-right: 25px;
-  span {
-    display: block;
-    height: 3px;
-    background-color: $red;
-    border-radius: 1px;
-  }
+<style lang="scss" scoped>
+.burger-wrapper {
+  position: absolute;
+  left: 10px;
+  top: 30px;
 }
-
 .nav {
+  display: none;
   position: absolute;
   left: 0;
   top: 0;
@@ -103,49 +82,24 @@ export default {
   .nav__close {
     padding-right: 38px;
   }
-  .nav__row {
-    padding: 18px 10px 0 14px;
-    h2 {
+  .nav__header {
+    padding: 18px 10px 0 16px;
+    p {
       flex-grow: 2;
-      margin: 0;
+      margin-left: 50px;
+      font-weight: 900;
+      font-size: 36px;
+      line-height: 42px;
+      color: $dark;
     }
   }
   .nav__logo {
     width: 36px;
   }
-  .address-wrapper {
+  address {
     height: 123px;
     background-color: $grey-light;
-    padding: 30px 93px;
-    address {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      a {
-        font-size: 18px;
-        line-height: 21px;
-      }
-      .phone {
-        &::before {
-          width: 16px;
-          height: 22px;
-          left: -33px;
-          top: 50%;
-          margin-top: -11px;
-        }
-      }
-      .mail {
-        &::before {
-          width: 22px;
-          height: 18px;
-          left: -44px;
-          top: 50%;
-          margin-top: -9px;
-        }
-      }
-    }
+    padding: 30px 70px;
   }
 }
 
@@ -156,7 +110,7 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: 30px 200px 40px 71px;
+    margin: 30px 200px 40px 70px;
     a {
       text-decoration: none;
       color: $dark;
@@ -167,7 +121,40 @@ nav {
   }
 }
 
-.close {
-  display: none;
+.open {
+  display: block;
+}
+
+@include _992 {
+  .nav {
+    display: block;
+    width: min-content;
+    position: relative;
+    background-color: transparent;
+  }
+  .burger,
+  .nav__header,
+  .address-wrapper {
+    display: none;
+  }
+  nav {
+    ul {
+      flex-direction: row;
+      justify-content: center;
+      height: min-content;
+      margin: 0;
+      li {
+        margin-left: 26px;
+      }
+      a {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    }
+  }
+  .address {
+    flex-direction: row;
+    align-items: center;
+  }
 }
 </style>

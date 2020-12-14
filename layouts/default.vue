@@ -1,9 +1,9 @@
 <template>
   <div>
+    <Header2 />
     <Nuxt />
   </div>
 </template>
 
-<style>
 
-</style>
+

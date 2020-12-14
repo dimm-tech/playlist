@@ -1,55 +1,58 @@
 <template>
   <address>
-    <a class="phone" href="tel:+7 (926) 904 66 66">+7 (926) 904 66 66</a>
-    <a class="mail" href="mailto:hello@formlab.ru">hello@formlab.ru</a>
+    <div class="phone">
+      <img src="~assets/img/icon-phone.svg" alt="phone" />
+      <a href="tel:+7 (926) 904 66 66">+7 (926) 904 66 66</a>
+    </div>
+    <div class="mail">
+      <img src="~assets/img/icon-mail.svg" alt="mail" />
+      <a href="mailto:hello@formlab.ru">hello@formlab.ru</a>
+    </div>
   </address>
 </template>
 
 <script>
-export default {};
+export default {}
 </script>
 
 <style lang="scss">
 address {
-  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  div {
+    display: flex;
+    align-items: center;
+  }
   a {
-    display: block;
     color: $dark;
-    font-size: 12px;
+    font-size: 18px;
+    line-height: 21px;
     font-weight: 700;
     font-style: normal;
     line-height: 20px;
-    position: relative;
     white-space: nowrap;
   }
   .phone {
-    text-decoration: none;
-    &::before {
-      content: "";
-      background-image: url("~assets/img/icon-phone.svg");
-      background-size: cover;
-      background-position: center;
-      width: 12px;
-      height: 16px;
-      position: absolute;
-      left: -19px;
-      top: 50%;
-      margin-top: -8px;
+    a {
+      text-decoration: none;
+    }
+    img {
+      width: 16px;
+      height: 22px;
+      margin-right: 16px;
     }
   }
   .mail {
-    &::before {
-      content: "";
-      background-image: url("~assets/img/icon-mail.svg");
-      background-size: cover;
-      background-position: center;
-      width: 16px;
-      height: 13px;
-      position: absolute;
-      left: -22px;
-      top: 50%;
-      margin-top: -6px;
+    margin-left: -3px;
+    img {
+      width: 22px;
+      height: 18px;
+      margin-right: 20px;
     }
   }
 }
+
 </style>
