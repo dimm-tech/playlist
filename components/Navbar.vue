@@ -1,160 +1,146 @@
 <template>
-  <div>  
-    <div class="burger-wrapper">
-      <Burger @navToggle="toggle" ref="Burger" />
+  <nav>
+    <div class="nav__title flex">
+      <p>Меню</p>
+      <img src="~assets/img/logo-avatar.svg" alt="formlab" />
     </div>
-    <div class="nav">
-      <div class="nav__header flex">
-        <p>Меню</p>
-        <img
-          class="nav__logo"
-          src="~assets/img/logo-avatar.svg"
-          alt="formlab"
-        />
-      </div>
-      <nav>
-        <ul>
-          <li v-for="page in pages" :key="page.link">
-            <a @click.prevent :href="'/' + page.link">{{ page.title }}</a>
-          </li>
-        </ul>
-      </nav>
-      <div class="address-wrapper">
-        <Address />
-      </div>
-    </div>
-  </div>
+    <ul>
+      <li v-for="page in pages" :key="page.link">
+        <a @click.prevent :href="'/' + page.link">{{ page.title }}</a>
+      </li>
+    </ul>
+    <Address />
+  </nav>
 </template>
 
-<script>
-import Burger from '@/components/Burger'
-import Address from '@/components/Address'
-export default {
-  components: {
-    Burger,
-    Address,
-  },
-  computed: {
-    pages() {
-      return this.$store.state.list
-    },
-  },
-  methods: {
-    open() {
-      document.querySelector('.nav').classList.add('open')
-      document.addEventListener('click', this.clickListener)
-    },
-    close() {
-      document.querySelector('.nav').classList.remove('open')
-      document.removeEventListener('click', this.clickListener)
-    },
-    toggle() {
-      if (document.querySelector('.nav').classList.contains('open')) {
-        this.close()
-      } else {
-        this.open()
-      }
-    },
-    clickListener(e) {
-      if (!document.querySelector('header').contains(e.target)) {
-        this.$refs.Burger.close()
-        this.close()
-      }
-    },
-  },
-}
-</script>
-
-<style lang="scss" scoped>
-.burger-wrapper {
-  position: absolute;
-  left: 10px;
-  top: 30px;
-}
-.nav {
-  display: none;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-  background-color: $white;
-  .nav__close {
-    padding-right: 38px;
-  }
-  .nav__header {
-    padding: 18px 10px 0 16px;
-    p {
-      flex-grow: 2;
-      margin-left: 50px;
-      font-weight: 900;
-      font-size: 36px;
-      line-height: 42px;
-      color: $dark;
-    }
-  }
-  .nav__logo {
-    width: 36px;
-  }
-  address {
-    height: 123px;
-    background-color: $grey-light;
-    padding: 30px 70px;
-  }
-}
-
+<style lang="scss">
 nav {
-  ul {
-    list-style: none;
-    height: 226px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 30px 200px 40px 70px;
-    a {
-      text-decoration: none;
-      color: $dark;
-      font-size: 18px;
-      font-weight: 400;
-      line-height: 21px;
-    }
-  }
-}
-
-.open {
-  display: block;
-}
-
-@include _992 {
-  .nav {
-    display: block;
-    width: min-content;
-    position: relative;
-    background-color: transparent;
-  }
-  .burger,
-  .nav__header,
-  .address-wrapper {
+  display: none;
+  flex-grow: 2;
+  .nav__title {
     display: none;
   }
-  nav {
-    ul {
-      flex-direction: row;
-      justify-content: center;
-      height: min-content;
-      margin: 0;
-      li {
-        margin-left: 26px;
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 var(--body-gap);
+    a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 14px;
+    }
+  }
+  address {
+    display: flex;
+    align-items: flex-start;
+    height: 120px;
+    padding: 30px 0 30px 70px;
+    background-color: var(--grey-light);
+    a {
+      font-size: 18px;
+    }
+    .phone {
+      margin-left: 4px;
+      img {
+        width: 16px;
+        height: 22px;
+        margin-right: 16px;
       }
-      a {
-        font-size: 12px;
-        line-height: 14px;
+    }
+    .mail {
+      img {
+        width: 22px;
+        height: 18px;
+        margin-right: 20px;
       }
     }
   }
-  .address {
-    flex-direction: row;
-    align-items: center;
+  &.open {
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: var(--white);
+    z-index: 1;
+    .nav__title {
+      display: flex;
+      padding-left: 70px;
+      p {
+        font-weight: 900;
+        font-size: 36px;
+        line-height: 42px;
+        color: var(--dark);
+        padding-top: 20px;
+      }
+      img {
+        width: 36px;
+        padding-top: 20px;
+        margin-right: 10px;
+      }
+    }
+
+    ul {
+      height: 225px;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 30px 0 40px 70px;
+      a {
+        text-decoration: none;
+        color: var(--dark);
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 21px;
+      }
+    }
+  }
+  @include _768 {
+    display: block;
+    address {
+      display: none;
+    }
+  }
+  @include _992 {
+    ul {
+      margin: 0 calc(var(--body-gap) / 2);
+    }
   }
 }
 </style>
+
+<script>
+export default {
+  computed: {
+    pages() {
+      return this.$store.state.menu
+    },
+  },
+  methods: {
+    // open() {
+    //   document.querySelector('nav').classList.add('open')
+    //   document.addEventListener('click', this.clickListener)
+    // },
+    // close() {
+    //   document.querySelector('nav').classList.remove('open')
+    //   document.removeEventListener('click', this.clickListener)
+    // },
+    // toggle() {
+    //   if (document.querySelector('nav').classList.contains('open')) {
+    //     this.close()
+    //   } else {
+    //     this.open()
+    //   }
+    // },
+    // clickListener(e) {
+    //   if (!document.querySelector('header').contains(e.target)) {
+    //     this.$refs.Burger.close()
+    //     this.close()
+    //   }
+    // },
+  },
+}
+</script>

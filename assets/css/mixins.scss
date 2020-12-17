@@ -1,0 +1,58 @@
+:root {
+  --grey-light: #F6F6F6;
+  --grey-dark: #E6E6E6;
+  --white: #ffffff;
+  --blue: #00BEDB;
+  --orange: #FF8400;
+  --red: #EF463B;
+  --dark: #323E48;
+  --body-gap: 10px;
+  @media (min-width: 576px) {
+    --body-gap: 20px;
+  }
+  @media (min-width: 768px) {
+    --body-gap: 40px;
+  }
+  @media (min-width: 992px) {
+    --body-gap: 60px;
+  }
+  @media (min-width: 1200px) {
+    --body-gap: 100px;
+  }
+}
+
+@mixin _480 {
+  @media (min-width: 480px) {
+    @content;
+  }
+}
+
+@mixin _576 {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+
+@mixin _768 {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin _992 {
+  @media (min-width: 992px) {
+    @content;
+  }
+}
+
+@mixin _1200 {
+  @media (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin _1366 {
+  @media (min-width: 1366px) {
+    @content;
+  }
+}

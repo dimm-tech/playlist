@@ -19,7 +19,7 @@ export default {
       } else {
         this.open()
       }
-      this.$emit('navToggle')
+      this.$store.dispatch('toggle')
     },
   },
 }
@@ -35,12 +35,12 @@ export default {
   height: 19px;
   position: relative;
   z-index: 2;
-  margin-bottom: 4px;
+  margin-right: 25px;
   span {
     display: block;
     width: 100%;
     height: 3px;
-    background-color: $red;
+    background-color: var(--red);
     border-radius: 1px;
     transition-duration: 250ms;
     transition-property: width;
@@ -53,7 +53,7 @@ export default {
     left: 0;
     right: 0;
     height: 3px;
-    background-color: $red;
+    background-color: var(--red);
     border-radius: 1px;
     transition-duration: 500ms;
   }
@@ -79,6 +79,10 @@ export default {
       transform: rotate(-45deg);
       top: calc(50% - 1px);
     }
+  }
+
+  @include _768 {
+    display: none;
   }
 }
 </style>

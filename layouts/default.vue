@@ -1,9 +1,13 @@
 <template>
   <div>
-    <Header2 />
+    <Header />
     <Nuxt />
   </div>
 </template>
+
+<style lang="scss">
+@import "~/assets/css/mixins.scss";
+</style>
 
 
 

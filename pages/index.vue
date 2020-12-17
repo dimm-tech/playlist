@@ -56,7 +56,11 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: linear-gradient(to top, rgba($dark, 0.7), rgba($dark, 0.7)),
+  background-image: linear-gradient(
+      to top,
+      rgba(#323E48, 0.7),
+      rgba(#323E48, 0.7)
+    ),
     url('~assets/img/bg-first-screen-mobile.jpg');
   background-size: cover;
   background-position: center;
@@ -64,10 +68,11 @@ export default {
     max-width: 670px;
     font-size: 34px;
     line-height: 40px;
-    color: $white;
+    color: var(--white);
   }
   img {
     max-width: 220px;
+    height: min-content;
     margin: 28px 0;
     align-self: flex-start;
   }
@@ -75,10 +80,15 @@ export default {
     max-width: 570px;
     font-weight: 400;
     line-height: 17px;
-    color: $white;
+    color: var(--white);
   }
   @include _576 {
-    height: 600px;
+    background-image: linear-gradient(
+        to top,
+        rgba(#323E48, 0.7),
+        rgba(#323E48, 0.7)
+      ),
+      url('~assets/img/bg-first-screen-desktop.jpg');
   }
   @include _768 {
     h1 {
@@ -90,6 +100,9 @@ export default {
       line-height: 21px;
     }
   }
+  @include _1366 {
+    height: 600px;
+  }
 }
 .development {
   .select {
@@ -99,12 +112,12 @@ export default {
 .tile {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  //  grid-template-rows: repeat(3);
   grid-column-gap: 10px;
   grid-row-gap: 30px;
+  margin-top: 20px;
   article {
     overflow: hidden;
-    color: $dark;
+    color: var(--dark);
     grid-column: span 1;
     &:first-child {
       grid-column: span 2;
@@ -126,7 +139,7 @@ export default {
     }
   }
   @include _576 {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
     article {
       &:nth-child(n + 6) {
         display: block;
@@ -137,7 +150,7 @@ export default {
     }
   }
   @include _768 {
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   @include _992 {
     grid-column-gap: 20px;
@@ -153,79 +166,4 @@ export default {
     }
   }
 }
-
-// .tile {
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 10px;
-//   article {
-//     flex-basis: 50%;
-//     color: $dark;
-//     margin-bottom: 20px;
-//     overflow: hidden;
-//     img {
-//       display: block;
-//       object-fit: cover;
-//       object-position: center;
-//       height: 192px;
-//     }
-//     .category {
-//       font-size: 12px;
-//       line-height: 16px;
-//       margin: 4px 0;
-//     }
-//     h3 {
-//       font-weight: 500;
-//       font-size: 16px;
-//       line-height: 22px;
-//     }
-//     .description {
-//       display: none;
-//       font-size: 13px;
-//       line-height: 18px;
-//     }
-//     &:first-child {
-//       flex-basis: 100%;
-//       .category {
-//         margin-bottom: 0;
-//       }
-//       h3 {
-//         font-size: 24px;
-//         line-height: 34px;
-//       }
-//       .description {
-//         display: block;
-//       }
-//     }
-//   }
-
-//   @include _576 {
-//     article {
-//       flex-basis: 33%;
-//       &:first-child {
-//         flex-basis: 66%;
-//       }
-//     }
-//   }
-
-//   @include _768 {
-//     article {
-//       img {
-//         height: 240px;
-//       }
-//     }
-//   }
-
-//   @include _992 {
-//     article {
-//       flex-basis: 25%;
-//       img {
-//         height: 300px;
-//       }
-//       &:first-child {
-//         flex-basis: 50%;
-//       }
-//     }
-//   }
-// }
 </style>

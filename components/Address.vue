@@ -8,51 +8,91 @@
       <img src="~assets/img/icon-mail.svg" alt="mail" />
       <a href="mailto:hello@formlab.ru">hello@formlab.ru</a>
     </div>
+    <button>Связаться</button>
   </address>
 </template>
 
 <script>
-export default {}
+export default {};
 </script>
 
 <style lang="scss">
 address {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
+  height: 40px;
   div {
     display: flex;
     align-items: center;
   }
   a {
-    color: $dark;
-    font-size: 18px;
-    line-height: 21px;
+    color: var(--dark);
+    font-size: 12px;
+    line-height: 14px;
     font-weight: 700;
     font-style: normal;
-    line-height: 20px;
     white-space: nowrap;
   }
   .phone {
+    margin-left: 7px;
     a {
       text-decoration: none;
     }
     img {
-      width: 16px;
-      height: 22px;
-      margin-right: 16px;
+      width: 11px;
+      height: 16px;
+      margin-right: 8px;
     }
   }
   .mail {
-    margin-left: -3px;
     img {
-      width: 22px;
-      height: 18px;
-      margin-right: 20px;
+      width: 16px;
+      height: 13px;
+      margin-right: 10px;
+    }
+  }
+
+  //   a {
+  //     text-decoration: none;
+  //   }
+  //   img {
+  //     width: 16px;
+  //     height: 22px;
+  //     margin-right: 16px;
+  //   }
+  // }
+  // .mail {
+  //   img {
+  //     width: 22px;
+  //     height: 18px;
+  //     margin-right: 20px;
+  //   }
+  // }
+
+  button {
+    display: none;
+    width: 100px;
+    height: 30px;
+    font: 700 12px/14px "Roboto";
+    color: --red;
+    background-color: transparent;
+    border: 2px solid --red;
+    border-radius: 4px;
+    margin-left: calc(var(--body-gap) / 2.5);
+  }
+  @include _992 {
+    flex-direction: row;
+    .phone {
+      margin-left: 0;
+    }
+    .mail {
+      margin-left: calc(var(--body-gap) / 2.5);
+    }
+    button {
+      display: block;
     }
   }
 }
-
 </style>

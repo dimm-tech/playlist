@@ -100,14 +100,14 @@ export default {
   &__value {
     width: 100%;
     appearance: none;
-    border: 2px solid $blue;
+    border: 2px solid var(--blue);
     border-radius: 4px;
     padding: 9px 16px;
     font-weight: 700;
     font-size: 13px;
     line-height: 18px;
-    color: $blue;
-    background-color: $white;
+    color: var(--blue);
+    background-color: var(--white);
   }
   &__dropdown {
     display: none;
@@ -116,32 +116,32 @@ export default {
     .select__arrow svg {
       transform: rotate(180deg);
       path {
-        stroke: $white;
+        stroke: var(--white);
       }
     }
     .select__value {
-      background-color: #00bedb;
-      color: #ffffff;
+      background-color: var(--blue);
+      color: var(--white);
     }
     .select__dropdown {
       display: flex;
       flex-direction: column;
-      background-color: $grey-light;
+      background-color: var(--grey-light);
       padding: 16px 0;
       list-style: none;
       li {
         padding: 4px 18px;
         &:hover {
-          background-color: $grey-dark;
+          background-color: var(--grey-dark);
         }
         font-weight: 700;
-        color: $blue;
+        color: var(--blue);
         text-decoration: underline;
       }
       span {
         font-weight: 400;
         font-size: 13px;
-        color: $blue;
+        color: var(--blue);
         margin-left: 8px;
       }
     }
