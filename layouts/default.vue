@@ -1,13 +1,16 @@
 <template>
   <div>
-    <Header />
+    <nuxt-link to="/add">add</nuxt-link>
+    <nuxt-link to="/list">list</nuxt-link>
+    <nuxt-link to="/spotify">spotify</nuxt-link>
     <Nuxt />
   </div>
 </template>
 
-<style lang="scss">
-@import "~/assets/css/mixins.scss";
-</style>
+<script>
+export default {
 
+}
+</script>
 
 

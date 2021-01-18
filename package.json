@@ -1,5 +1,5 @@
 {
-  "name": "formlab",
+  "name": "playlist",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,8 +15,11 @@
   "devDependencies": {
     "@nuxtjs/style-resources": "^1.0.0",
     "cross-env": "^7.0.2",
+    "firebase": "^8.2.1",
+    "jsmediatags": "^3.9.3",
     "node-sass": "^4.14.1",
-    "sass-loader": "^10.0.3"
+    "sass-loader": "^10.0.3",
+    "vuelidate": "^0.7.6"
   },
   "prettier": {
     "semi": false,

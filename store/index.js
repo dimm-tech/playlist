@@ -1,178 +1,86 @@
+import { db, storage } from '~/plugins/firebase.js'
+
 export const state = () => ({
-  department: [{
-      value: 'Безопасность',
-      num: '26'
-    },
-    {
-      value: 'Промышленное оборудование',
-      num: '25'
-    },
-    {
-      value: 'Медицина',
-      num: '24'
-    },
-    {
-      value: 'Автоэлектроника',
-      num: '11'
-    },
-    {
-      value: 'Бытовая техника',
-      num: '10'
-    },
-    {
-      value: 'Вендинг и самобслуживание',
-      num: '8'
-    },
-    {
-      value: 'Климатическое оборудование',
-      num: '7'
-    },
-    {
-      value: 'Система связи',
-      num: '7'
-    },
-    {
-      value: 'Строительство и ремонт',
-      num: '7'
-    },
-    {
-      value: 'Освещение',
-      num: '6'
-    },
-    {
-      value: 'Лабораторное оборудование',
-      num: '5'
-    },
-    {
-      value: 'Платежные системы',
-      num: '5'
-    },
-    {
-      value: 'Система доступа',
-      num: '5'
-    },
-    {
-      value: 'Компьютеры',
-      num: '4'
-    },
-    {
-      value: 'Неразрушающий контроль',
-      num: '4'
-    },
-    {
-      value: 'Оборудование',
-      num: '4'
-    },
-  ],
-  menu: [{
-      title: 'Портфолио',
-      link: 'portfolio'
-    },
-    {
-      title: 'Блог',
-      link: 'projects'
-    },
-    {
-      title: 'Услуги',
-      link: 'services'
-    },
-    {
-      title: 'Цены',
-      link: 'price'
-    },
-    {
-      title: 'Команда',
-      link: 'team'
-    },
-    {
-      title: 'Контакты',
-      link: 'contacts'
-    },
-  ],
-  projects: [{
-      img: '../assets/img/projects-aurica.jpg',
-      category: 'Медицинская техника',
-      name: 'Слуховые аппараты Aurica',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-struna.jpg',
-      category: 'Системы безопасности и спецустройства',
-      name: 'Блок охранной сигнализации «Струна»',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-nabat.jpg',
-      category: 'Системы безопасности и спецустройства',
-      name: 'Многоцелевой интеллектуальный терминал связи «НАБАТ®»',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-under_constr.jpg',
-      category: 'Электроника',
-      name: 'Караоке-машина AST, v.4',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-lobzik.jpg',
-      category: 'Другие проекты',
-      name: 'Разработка дизайна электролобзика',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-aurica.jpg',
-      category: 'Медицинская техника',
-      name: 'Слуховые аппараты Aurica',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-struna.jpg',
-      category: 'Системы безопасности и спецустройства',
-      name: 'Блок охранной сигнализации «Струна»',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-nabat.jpg',
-      category: 'Системы безопасности и спецустройства',
-      name: 'Многоцелевой интеллектуальный терминал связи «НАБАТ®»',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-under_constr.jpg',
-      category: 'Электроника',
-      name: 'Караоке-машина AST, v.4',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-    {
-      img: '../assets/img/projects-lobzik.jpg',
-      category: 'Другие проекты',
-      name: 'Разработка дизайна электролобзика',
-      desc: 'Дизайн и эргономическое решение компактных слуховых аппаратов BTE-13 и RIC-10.'
-    },
-  ]
+  isLogin: false,
+  posts: [],
 })
 
 export const actions = {
-  open() {
-    document.querySelector('nav').classList.add('open')
-    document.addEventListener('click', this.dispatch('clickListener'))
-  },
-  close() {
-    document.querySelector('nav').classList.remove('open')
-    document.removeEventListener('click', this.dispatch('clickListener'))
-  },
-  toggle() {
-    if (document.querySelector('nav').classList.contains('open')) {
-      this.dispatch('close')
-    } else {
-      this.dispatch('open')
+  async loadFromDB({ commit }, dbTable) {
+    try {
+      await db.ref(dbTable).once('value').then((s) => {
+        commit('loadPosts', s.val())
+      })
+    }
+    catch (err) {
+      console.log(err);
     }
   },
-  clickListener(context) {
-    console.log(context);
-    // if (!document.querySelector('header').contains(document.querySelector('.first-section'))) {
-    //   //  this.$refs.Burger.close()
-    //   this.dispatch('close')
-    // }
+  infoToDB({ commit }, [table, timestamp, ...payload]) {
+    db.ref(`/${table}/${timestamp}`).set(...payload);
   },
+  async fileToDB({ commit, dispatch }, [table, timestamp, file]) {
+    await storage.ref(`${table}/${timestamp}`).put(file)
+    storage.ref(`${table}/${timestamp}`)
+      .getDownloadURL()
+      .then((url) => {
+        db.ref(`/${table}/${timestamp}`).update({ file: url })
+      })
+  },
+  timeFormatter({ commit }, ms) {
+    let minutes = Math.floor(ms / 1000 / 60)
+    let seconds = Math.floor((ms / 1000) % 60)
+    seconds < 10 ? (seconds = `0${seconds}`) : seconds
+    return `${minutes}:${seconds}`
+  }, 
+  trackDurationFromInput({ commit, dispatch }, fileInput) {
+    const file = fileInput.files[0]
+    const reader = new FileReader(file)
+    reader.readAsDataURL(file)
+    reader.onload = function (e) {
+      const audio = new Audio()
+          audio.src = e.target.result
+          audio.onload = function () {
+            console.log(audio)
+          }
+          // duration = async () => {
+          //   return await dispatch('timeFormatter', audio.duration * 1000)
+          //   console.log('The duration of the song is of: ' + duration + ' seconds')
+          // }
+          // audio.addEventListener('loadedmetadata', duration)
+          console.log(e.target)
+        }
+  //  reader.readAsDataURL(file)
+  //  console.log(duration);
+    // if (file) {
+    //   const reader = new FileReader()
+    //   reader.addEventListener('load', (e) => {
+    //     audio.src = e.target.result
+        
+    //     duration = async () => {
+    //       return await dispatch('timeFormatter', audio.duration * 1000)
+    //       console.log('The duration of the song is of: ' + duration + ' seconds')
+    //     }
+    //     audio.addEventListener('loadedmetadata', duration)
+    //     console.log(duration);
+    //   })
+    //   reader.readAsDataURL(file)
+    // }
+    //return duration
+  }
+}
+
+export const mutations = {
+  loadPosts(state, payload) {
+    state.posts = payload
+  },
+  loggedIn(state) {
+    state.isLogin = true
+  }
+}
+
+export const getters = {
+  isLogin(state) {
+    return state.isLogin
+  }
 }
