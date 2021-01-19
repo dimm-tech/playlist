@@ -11,8 +11,7 @@ export const actions = {
       await db.ref(dbTable).once('value').then((s) => {
         commit('loadPosts', s.val())
       })
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   },
@@ -32,41 +31,29 @@ export const actions = {
     let seconds = Math.floor((ms / 1000) % 60)
     seconds < 10 ? (seconds = `0${seconds}`) : seconds
     return `${minutes}:${seconds}`
-  }, 
+  },
   trackDurationFromInput({ commit, dispatch }, fileInput) {
     const file = fileInput.files[0]
     const reader = new FileReader(file)
-    reader.readAsDataURL(file)
-    reader.onload = function (e) {
-      const audio = new Audio()
-          audio.src = e.target.result
-          audio.onload = function () {
-            console.log(audio)
-          }
-          // duration = async () => {
-          //   return await dispatch('timeFormatter', audio.duration * 1000)
-          //   console.log('The duration of the song is of: ' + duration + ' seconds')
-          // }
-          // audio.addEventListener('loadedmetadata', duration)
-          console.log(e.target)
+    let audio = document.createElement('audio')
+    let duration = ''
+    if (file) {
+      const reader = new FileReader()
+      reader.addEventListener('load', (e) => {
+        audio.src = e.target.result
+
+        audio.onloadedmetadata = () => {
+          duration = audio.duration
+          console.log('The duration of the song is of: ' + audio.duration + ' seconds')
         }
-  //  reader.readAsDataURL(file)
-  //  console.log(duration);
-    // if (file) {
-    //   const reader = new FileReader()
-    //   reader.addEventListener('load', (e) => {
-    //     audio.src = e.target.result
-        
-    //     duration = async () => {
-    //       return await dispatch('timeFormatter', audio.duration * 1000)
-    //       console.log('The duration of the song is of: ' + duration + ' seconds')
-    //     }
-    //     audio.addEventListener('loadedmetadata', duration)
-    //     console.log(duration);
-    //   })
-    //   reader.readAsDataURL(file)
-    // }
-    //return duration
+
+      })
+      reader.readAsDataURL(file)
+    }
+    if (duration) {
+      console.log('a')
+      return duration
+    }
   }
 }
 

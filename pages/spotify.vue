@@ -5,70 +5,87 @@
 
     <h3>search for track info</h3>
     <input type="text" v-model="query" @input="search" />
-    <ul class="results"></ul>
-
-    <form class="add" v-if="isPicked">
-      <label for="artist">Исполнитель</label>
-      <input
-        id="artist"
-        type="text"
-        v-model.trim="artist"
-        :class="{
-          invalid:
-            ($v.artist.$dirty && !$v.artist.required) ||
-            ($v.artist.$dirty && !$v.artist.minLength),
-        }"
-      />
-      <small v-if="$v.artist.$dirty && !$v.artist.required"
-        >заполните это поле</small
+    <ul class="results" v-if="!isPicked">
+      <li
+        class="result"
+        v-for="(trackInfo, k) in tracks"
+        :key="k"
+        @click="pick(k)"
       >
-      <small v-if="$v.artist.$dirty && !$v.artist.minLength"
-        >не меньше двух символов</small
-      >
-      <label for="track">Композиция</label>
-      <input
-        id="track"
-        type="text"
-        v-model.trim="track"
-        :class="{
-          invalid:
-            ($v.track.$dirty && !$v.track.required) ||
-            ($v.track.$dirty && !$v.track.minLength),
-        }"
-      />
-      <small v-if="$v.track.$dirty && !$v.track.required"
-        >заполните это поле</small
-      >
-      <small v-if="$v.track.$dirty && !$v.track.minLength"
-        >не меньше двух символов</small
-      >
-      <label for="album">Альбом</label>
-      <input
-        id="album"
-        type="text"
-        v-model.trim="album"
-        :class="{
-          invalid:
-            ($v.track.$dirty && !$v.track.required) ||
-            ($v.track.$dirty && !$v.track.minLength),
-        }"
-      />
-      <small v-if="$v.track.$dirty && !$v.track.required"
-        >заполните это поле</small
-      >
-      <small v-if="$v.track.$dirty && !$v.track.minLength"
-        >не меньше двух символов</small
-      >
-      <div class="tags">
-        <label for="tags">Тэги</label>
-        <input id="tags" type="text" />
-        <span class="addTag" @click="addTag">+</span>
-        <div class="tag" v-for="tag in tags" :key="tag.id">
-          <span class="tagVal">{{ tag }}</span>
-          <span class="delTag" @click="delTag">-</span>
+        <div class="result-wrapper">
+          <img class="album-img" :src="trackInfo.albumImg" />
+          <div class="result__info">
+            <div class="track-name">{{ trackInfo.track }}</div>
+            <div class="artist-name">{{ trackInfo.artist }}</div>
+          </div>
         </div>
-      </div>
-    </form>
+        <div>{{ trackInfo.trackDuration }}</div>
+      </li>
+    </ul>
+
+    <div class="picked"  v-if="isPicked">
+      <img :src="tracks[0].albumImg" />
+      <form class="addForm">
+        <label for="artist">Исполнитель</label>
+        <input
+          id="artist"
+          type="text"
+          v-model.trim="tracks[0].artist"
+          :class="{
+            invalid: $v.artist.$dirty && !$v.artist.required,
+          }"
+        />
+        <small v-if="$v.artist.$dirty && !$v.artist.required"
+          >заполните это поле</small
+        >
+
+        <label for="track">Композиция</label>
+        <input
+          id="track"
+          type="text"
+          v-model.trim="tracks[0].track"
+          :class="{
+            invalid: $v.track.$dirty && !$v.track.required,
+          }"
+        />
+        <small v-if="$v.track.$dirty && !$v.track.required"
+          >заполните это поле</small
+        >
+
+        <label for="album">Альбом</label>
+        <input
+          id="album"
+          type="text"
+          v-model.trim="tracks[0].album"
+          :class="{
+            invalid: $v.track.$dirty && !$v.track.required,
+          }"
+        />
+        <small v-if="$v.track.$dirty && !$v.track.required"
+          >заполните это поле</small
+        >
+        
+        <label for="year">Год</label>
+        <input
+          id="year"
+          type="text"
+          v-model.trim="tracks[0].album"
+          :class="{
+            invalid: $v.track.$dirty && !$v.track.required,
+          }"
+        />
+
+        <div class="tags">
+          <label for="tags">Тэги</label>
+          <input id="tags" type="text" />
+          <span class="addTag" @click="addTag">+</span>
+          <div class="tag" v-for="tag in tags" :key="tag.id">
+            <span class="tagVal">{{ tag }}</span>
+            <span class="delTag" @click="delTag">-</span>
+          </div>
+        </div>
+      </form>
+    </div>
 
     <button class="toDB">to DataBase</button>
   </section>
@@ -88,6 +105,7 @@ export default {
       trackDuration: '',
       album: '',
       tags: [],
+      tracks: [],
     }
   },
   methods: {
@@ -101,10 +119,10 @@ export default {
       const clientId = '2ca901aa7f24402bb20a5407c3b2dc23'
       const clientSecret = 'd018d095799647d79a3e54f2db701747'
       const results = document.querySelector('.results')
+      let self = this
+      this.tracks = []
 
-      results.innerHTML = ''
-
-      const _getToken = async () => {
+      const _getTokenSpotify = async () => {
         const result = await fetch('https://accounts.spotify.com/api/token', {
           method: 'POST',
           headers: {
@@ -118,7 +136,7 @@ export default {
         return data.access_token
       }
 
-      const _getTrackByName = async (token, query) => {
+      const _searchTrackSpotify = async (token, query) => {
         const result = await fetch(
           `https://api.spotify.com/v1/search?q=${query}&type=track&limit=50`,
           {
@@ -133,78 +151,32 @@ export default {
 
       const getTrackByName = async (query) => {
         query = encodeURI(query)
-        const token = await _getToken()
-        const data = await _getTrackByName(token, query)
+        const token = await _getTokenSpotify()
+        const data = await _searchTrackSpotify(token, query)
         const tracks = data['tracks'].items
-
         tracks.forEach(async (el) => {
-          let trackInfo = {
-            track: el.name,
+          self.tracks.push({
             artist: el.artists[0].name,
-            album: el.album.name,
-            albumImg: el.album.images[0].url,
+            track: el.name,
             trackDuration: await this.$store.dispatch(
               'timeFormatter',
               el.duration_ms
             ),
-          }
-
-          let result = renderDOM(trackInfo)
-          results.append(result)
-          result.onclick = () => {
-            pick(trackInfo)
-          }
+            album: el.album.name,
+            albumImg: el.album.images[0].url,
+          })
         })
       }
 
-      const renderDOM = (trackInfo) => {
-        let item = document.createElement('li')
-        item.classList.add('result')
-
-        item.innerHTML = `
-          <div class="result-wrapper">
-            <img class="album-img" src="${trackInfo.albumImg}" />
-            <div class="result__info">
-              <div class="track-name">${trackInfo.track}</div>
-              <div class="artist-name">${trackInfo.artist}</div>
-            </div>
-          </div>
-          <div>${trackInfo.trackDuration}</div>
-        `
-        return item
-      }
-
-      const pick = (trackInfo) => {
-        const table = 'music'
-        const timestamp = new Date().getTime()
-        const item = renderDOM(trackInfo)
-
-        results.innerHTML = ''
-        results.append(item)
-        this.artist = trackInfo.artist
-        this.track = trackInfo.track
-        this.album = trackInfo.album
-        this.isPicked = true
-
-        // document.querySelector('#file').addEventListener('change', (e) => {
-        //   jsmediatags.read(document.querySelector('#file').files[0], {
-        //     onSuccess: function (tag) {
-        //       console.log(tag)
-        //     },
-        //     onError: function (error) {
-        //       console.log(':(', error.type, error.info)
-        //     },
-        //   })
-        // })
-
-        document.querySelector('.toDB').onclick = () => {
-          let file = document.querySelector('#file').files[0]
-
-          this.$store.dispatch('infoToDB', [table, timestamp, trackInfo])
-          this.$store.dispatch('fileToDB', [table, timestamp, file])
-        }
-      }
       e.target.value && getTrackByName(this.query)
+    },
+    pick(k) {
+      const table = 'music'
+      const timestamp = new Date().getTime()
+      const target = this.tracks[k]
+      this.isPicked = true
+      this.tracks = []
+      this.tracks.push(target)
     },
     addTag(e) {
       console.log(e.target.parentNode.querySelector('input').value)
@@ -218,8 +190,8 @@ export default {
     },
   },
   validations: {
-    artist: { required, minLength: 2 },
-    track: { required, minLength: 2 },
+    artist: { required },
+    track: { required },
     file: { required },
   },
   mounted() {},
@@ -228,6 +200,9 @@ export default {
 
 <style lang="scss">
 .search {
+  p {
+    font-size: 0.65rem;
+  }
   #file {
     border: none;
     margin-bottom: 1rem;
@@ -254,8 +229,44 @@ export default {
       }
     }
   }
-  p {
-    font-size: 0.65rem;
+  .picked {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 2rem 0;
+    img {
+      width: 50%;
+      margin-right: 2rem;
+    }
+  }
+  .addForm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .invalid {
+      border-bottom: 1px solid red;
+    }
+    .tags {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      span {
+        cursor: pointer;
+      }
+      .addTag {
+        position: absolute;
+        bottom: 1rem;
+        right: 4px;
+      }
+      .tag {
+        margin: 4px;
+        padding: 4px 8px;
+        border: 1px solid grey;
+        border-radius: 4px;
+        .delTag {
+          margin-left: 8px;
+        }
+      }
+    }
   }
 }
 </style>
