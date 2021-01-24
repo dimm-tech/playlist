@@ -3,7 +3,7 @@ export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   router: {
     base: '/',
-  //  mode: 'hash'
+    //  mode: 'hash'
   },
   head: {
     title: 'playlist',
@@ -17,7 +17,17 @@ export default {
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap' }
     ]
   },
-
+  loading: {
+    color: '#ff0000'
+  },
+  modules: [
+    'bootstrap-vue/nuxt'
+  ],
+  modules: ['bootstrap-vue/nuxt'],
+  bootstrapVue: {
+    bootstrapCSS: false, // Or `css: false`
+    bootstrapVueCSS: false // Or `bvCSS: false`
+  },
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '~assets/css/main.scss'
@@ -33,15 +43,7 @@ export default {
   buildModules: [],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
-  modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/style-resources',
-  ],
-  styleResources: {
-    scss: [
-      '~assets/css/mixins.scss',
-    ]
-  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     //  extractCSS: true,

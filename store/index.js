@@ -34,26 +34,10 @@ export const actions = {
   },
   trackDurationFromInput({ commit, dispatch }, fileInput) {
     const file = fileInput.files[0]
-    const reader = new FileReader(file)
     let audio = document.createElement('audio')
-    let duration = ''
-    if (file) {
-      const reader = new FileReader()
-      reader.addEventListener('load', (e) => {
-        audio.src = e.target.result
-
-        audio.onloadedmetadata = () => {
-          duration = audio.duration
-          console.log('The duration of the song is of: ' + audio.duration + ' seconds')
-        }
-
-      })
-      reader.readAsDataURL(file)
-    }
-    if (duration) {
-      console.log('a')
-      return duration
-    }
+    audio.src = URL.createObjectURL(file)
+    audio.setAttribute('controls', true)
+    document.querySelector('.input-file').append(audio)
   }
 }
 

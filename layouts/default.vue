@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <nuxt-link to="/add">add</nuxt-link>
-    <nuxt-link to="/spotify">spotify</nuxt-link>
+  <main>
     <Nuxt />
-  </div>
+  </main>
 </template>
 
 <script>
 export default {
-
+  
 }
 </script>
 
+<style lang="scss">
+
+</style>
 

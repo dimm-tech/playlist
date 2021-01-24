@@ -136,34 +136,5 @@ export default {
 </script>
 
 <style lang="scss">
-.add {
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0;
-  .invalid {
-    border-bottom: 1px solid red;
-  }
-  .tags {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    span {
-      cursor: pointer;
-    }
-    .addTag {
-      position: absolute;
-      bottom: 1rem;
-      right: 4px;
-    }
-    .tag {
-      margin: 4px;
-      padding: 4px 8px;
-      border: 1px solid grey;
-      border-radius: 4px;
-      .delTag {
-        margin-left: 8px;
-      }
-    }
-  }
-}
+
 </style>

@@ -1,11 +1,17 @@
 <template>
-  <section class="search">
-    <h3>Choose a file</h3>
-    <input id="file" type="file" @change="getTrackDuration" />
+  <b-container class="search" fluid="xl" tag="section">
+    <h1 class="py-3">search for track info</h1>
+    <!-- <input type="text" v-model="query" @input="search" /> -->
+    <b-form-group>
+      <b-form-input
+        id="search-query"
+        v-model="query"
+        @input="search"
+      ></b-form-input>
+      <b-form-text>artist or track name</b-form-text>
+    </b-form-group>
 
-    <h3>search for track info</h3>
-    <input type="text" v-model="query" @input="search" />
-    <ul class="results" v-if="!isPicked">
+    <!-- <ul class="results" v-if="!isPicked">
       <li
         class="result"
         v-for="(trackInfo, k) in tracks"
@@ -21,74 +27,107 @@
         </div>
         <div>{{ trackInfo.trackDuration }}</div>
       </li>
-    </ul>
+    </ul> -->
+    <b-col md="8 px-0">
+      <b-card
+        class="mb-2"
+        no-body
+        bg-variant="transparent"
+        v-for="(trackInfo, k) in items"
+        :key="k"
+      >
+        <b-row no-gutters>
+          <b-col cols="3" sm="2">
+            <b-card-img :src="trackInfo.albumImg"></b-card-img>
+          </b-col>
+          <b-col cols="9" sm="10" class="pl-3 pr-1">
+            <b-card-title
+              class="track-name overflow-hidden my-1"
+              title-tag="p"
+              >{{ trackInfo.track }}</b-card-title
+            >
+            <b-card-sub-title sub-title-tag="p">{{
+              trackInfo.artist
+            }}</b-card-sub-title>
+          </b-col>
+        </b-row>
+      </b-card>
+    </b-col>
+    <section class="picked" v-if="isPicked">
+      <div>
+        <img :src="tracks[0].albumImg" />
+        <form class="addForm">
+          <label for="artist">Исполнитель</label>
+          <input
+            id="artist"
+            type="text"
+            v-model.trim="tracks[0].artist"
+            :class="{
+              invalid: $v.artist.$dirty && !$v.artist.required,
+            }"
+          />
+          <small v-if="$v.artist.$dirty && !$v.artist.required"
+            >заполните это поле</small
+          >
 
-    <div class="picked"  v-if="isPicked">
-      <img :src="tracks[0].albumImg" />
-      <form class="addForm">
-        <label for="artist">Исполнитель</label>
-        <input
-          id="artist"
-          type="text"
-          v-model.trim="tracks[0].artist"
-          :class="{
-            invalid: $v.artist.$dirty && !$v.artist.required,
-          }"
-        />
-        <small v-if="$v.artist.$dirty && !$v.artist.required"
-          >заполните это поле</small
-        >
+          <label for="track">Композиция</label>
+          <input
+            id="track"
+            type="text"
+            v-model.trim="tracks[0].track"
+            :class="{
+              invalid: $v.track.$dirty && !$v.track.required,
+            }"
+          />
+          <small v-if="$v.track.$dirty && !$v.track.required"
+            >заполните это поле</small
+          >
 
-        <label for="track">Композиция</label>
-        <input
-          id="track"
-          type="text"
-          v-model.trim="tracks[0].track"
-          :class="{
-            invalid: $v.track.$dirty && !$v.track.required,
-          }"
-        />
-        <small v-if="$v.track.$dirty && !$v.track.required"
-          >заполните это поле</small
-        >
+          <label for="album">Альбом</label>
+          <input
+            id="album"
+            type="text"
+            v-model.trim="tracks[0].album"
+            :class="{
+              invalid: $v.track.$dirty && !$v.track.required,
+            }"
+          />
+          <small v-if="$v.track.$dirty && !$v.track.required"
+            >заполните это поле</small
+          >
 
-        <label for="album">Альбом</label>
-        <input
-          id="album"
-          type="text"
-          v-model.trim="tracks[0].album"
-          :class="{
-            invalid: $v.track.$dirty && !$v.track.required,
-          }"
-        />
-        <small v-if="$v.track.$dirty && !$v.track.required"
-          >заполните это поле</small
-        >
-        
-        <label for="year">Год</label>
-        <input
-          id="year"
-          type="text"
-          v-model.trim="tracks[0].album"
-          :class="{
-            invalid: $v.track.$dirty && !$v.track.required,
-          }"
-        />
+          <label for="year">Год</label>
+          <input
+            id="year"
+            type="text"
+            v-model.trim="tracks[0].album"
+            :class="{
+              invalid: $v.track.$dirty && !$v.track.required,
+            }"
+          />
 
-        <div class="tags">
-          <label for="tags">Тэги</label>
-          <input id="tags" type="text" />
-          <span class="addTag" @click="addTag">+</span>
-          <div class="tag" v-for="tag in tags" :key="tag.id">
-            <span class="tagVal">{{ tag }}</span>
-            <span class="delTag" @click="delTag">-</span>
+          <div class="tags">
+            <label for="tags">Тэги</label>
+            <input id="tags" type="text" />
+            <span class="addTag" @click="addTag">+</span>
+            <div class="tag" v-for="tag in tags" :key="tag.id">
+              <span class="tagVal">{{ tag }}</span>
+              <span class="delTag" @click="delTag">-</span>
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
 
-    <button class="toDB">to DataBase</button>
-  </section>
+      <button class="toDB">to DataBase</button>
+    </section>
+    <b-badge class="mb-2" variant="dark">file</b-badge>
+    <div class="input-file">
+      <input id="file" type="file" @change="getTrackDuration" />
+      <b-btn size="sm" variant="primary">
+        <label for="file">choose a file...</label>
+      </b-btn>
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -108,6 +147,11 @@ export default {
       tracks: [],
     }
   },
+  computed: {
+    items: function () {
+      return this.tracks
+    },
+  },
   methods: {
     getTrackDuration(e) {
       this.trackDuration = this.$store.dispatch(
@@ -115,7 +159,7 @@ export default {
         e.target
       )
     },
-    search(e) {
+    search() {
       const clientId = '2ca901aa7f24402bb20a5407c3b2dc23'
       const clientSecret = 'd018d095799647d79a3e54f2db701747'
       const results = document.querySelector('.results')
@@ -167,8 +211,8 @@ export default {
           })
         })
       }
-
-      e.target.value && getTrackByName(this.query)
+      this.query ? getTrackByName(this.query) : false
+      setTimeout(this.longTrackNameHandler, 500)
     },
     pick(k) {
       const table = 'music'
@@ -178,15 +222,22 @@ export default {
       this.tracks = []
       this.tracks.push(target)
     },
-    addTag(e) {
-      console.log(e.target.parentNode.querySelector('input').value)
-      this.tags.push(e.target.parentNode.querySelector('input').value)
-      e.target.parentNode.querySelector('input').value = ''
-    },
-    delTag(e) {
-      const val = e.target.parentNode.querySelector('.tagVal').innerText
-      let mrk = this.tags.indexOf(val, 0)
-      this.tags.splice(mrk, 1)
+    longTrackNameHandler() {
+      const trackName = document.querySelectorAll('.track-name')
+      trackName.forEach((el) => {
+        const elWidth = el.offsetWidth
+        const elText = el.innerText
+        if (elWidth < elText.length * 8) {
+          let newEl = document.createElement('div')
+          newEl.classList.add('track-name', 'mrq', 'my-1')
+          newEl.innerText = el.innerText
+          let wrp = document.createElement('div')
+          wrp.classList.add('track-name_wrapper')
+          wrp.append(newEl)
+          el.parentElement.insertBefore(wrp, el)
+          el.remove()
+        }
+      })
     },
   },
   validations: {
@@ -200,73 +251,42 @@ export default {
 
 <style lang="scss">
 .search {
-  p {
-    font-size: 0.65rem;
-  }
-  #file {
-    border: none;
-    margin-bottom: 1rem;
-  }
-  .results {
-    .result {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem;
-      &:hover {
-        border: 2px solid greenyellow;
-      }
-      &-wrapper {
-        display: flex;
-        align-items: center;
-      }
-      .album-img {
-        width: 64px;
-        margin-right: 1rem;
-      }
-      .track-name {
-        font-weight: 500;
-      }
+  .track-name {
+    white-space: nowrap;
+    &_wrapper {
+      overflow: hidden;
     }
   }
-  .picked {
-    display: flex;
-    flex-wrap: nowrap;
-    margin: 2rem 0;
-    img {
-      width: 50%;
-      margin-right: 2rem;
+  .mrq {
+    animation: toLeft 5s linear 1 forwards, fromRight 5s linear 5s infinite;
+  }
+
+  @keyframes toLeft {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-300%);
     }
   }
-  .addForm {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    .invalid {
-      border-bottom: 1px solid red;
+  @keyframes fromRight {
+    0% {
+      transform: translateX(100%);
     }
-    .tags {
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      span {
-        cursor: pointer;
-      }
-      .addTag {
-        position: absolute;
-        bottom: 1rem;
-        right: 4px;
-      }
-      .tag {
-        margin: 4px;
-        padding: 4px 8px;
-        border: 1px solid grey;
-        border-radius: 4px;
-        .delTag {
-          margin-left: 8px;
-        }
-      }
+    100% {
+      transform: translateX(-300%);
     }
+  }
+}
+
+.input-file {
+  input {
+    width: 0;
+    position: absolute;
+    left: 0;
+  }
+  label {
+    margin: 0;
   }
 }
 </style>
