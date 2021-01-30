@@ -32,13 +32,6 @@ export const actions = {
     seconds < 10 ? (seconds = `0${seconds}`) : seconds
     return `${minutes}:${seconds}`
   },
-  trackDurationFromInput({ commit, dispatch }, fileInput) {
-    const file = fileInput.files[0]
-    let audio = document.createElement('audio')
-    audio.src = URL.createObjectURL(file)
-    audio.setAttribute('controls', true)
-    document.querySelector('.input-file').append(audio)
-  }
 }
 
 export const mutations = {

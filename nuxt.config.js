@@ -32,6 +32,10 @@ export default {
   css: [
     '~assets/css/main.scss'
   ],
+  overrides: [{
+    files: ["*.vue"],
+    processor: "vue/.vue"
+  }],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [],
