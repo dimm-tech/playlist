@@ -1,10 +1,11 @@
 <template>
   <section class="list">
-    <h1>music</h1>
+    <router-link to="/search">search</router-link>
+    <h1 class="py-3">music</h1>
     <article>
       <ul>
         <li v-for="p in posts.music" :key="p.id">
-          <div>{{ p.artistName}} - {{p.trackName }}</div>
+          <div>{{ p.artistName }} - {{ p.trackName }}</div>
           <audio :src="p.file" controls></audio>
         </li>
       </ul>
@@ -14,14 +15,19 @@
 
 <style lang="scss">
 .list {
+  margin-left: 1rem;
+
   ul {
-    margin-left: 1rem;
+    padding: 0;
+    margin: 0 1rem;
+    list-style: none;
   }
   p {
     font-size: 0.65rem;
   }
   audio {
     width: 100%;
+    margin-top: 1rem;
     &:focus {
       outline: none;
     }
@@ -41,6 +47,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch('loadFromDB')
   },
 }
 </script>

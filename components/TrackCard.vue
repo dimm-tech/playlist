@@ -14,7 +14,7 @@
       </b-col>
       <b-col
         cols="1"
-        class="d-inline-flex align-items-center justify-content-center"
+        class="track-duration d-inline-flex align-items-center justify-content-center pr-2"
       >
         {{ trackInfo.trackDuration }}
       </b-col>
@@ -39,6 +39,10 @@ export default {
   &_wrapper {
     overflow: hidden;
   }
+}
+
+.track-duration {
+  font-size: 12px;
 }
 
 .mrq {

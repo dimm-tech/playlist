@@ -1,5 +1,6 @@
 <template>
   <b-container class="search" fluid="xl" tag="section">
+    <router-link to="/">music</router-link>
     <h1 class="py-3">search for track info</h1>
     <b-form-group>
       <b-form-input
@@ -102,7 +103,7 @@ import trackCard from '~/components/TrackCard.vue'
 
 export default {
   components: {
-    'track-card': trackCard
+    'track-card': trackCard,
   },
   data() {
     return {
@@ -131,8 +132,14 @@ export default {
 
       const getTrackByName = async (query) => {
         query = encodeURI(query)
-        const token = await self.$store.dispatch('spotify/getToken', [clientId, clientSecret])
-        const data = await self.$store.dispatch('spotify/searchTrack', [token, query])
+        const token = await self.$store.dispatch('spotify/getToken', [
+          clientId,
+          clientSecret,
+        ])
+        const data = await self.$store.dispatch('spotify/searchTrack', [
+          token,
+          query,
+        ])
         const tracks = data['tracks'].items
 
         tracks.forEach(async (el) => {
@@ -146,7 +153,7 @@ export default {
             album: el.album.name,
             albumImg: el.album.images[0].url,
           })
-        }) 
+        })
       }
 
       this.query ? getTrackByName(this.query) : false
