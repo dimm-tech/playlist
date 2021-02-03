@@ -1,9 +1,30 @@
-@import 'bootstrap/scss/bootstrap.scss';
-@import 'bootstrap-vue/src/index.scss';
+@import '../fonts/Helvetica/stylesheet.css';
+
+:root {
+  --gap: .5rem;
+  @media screen and (min-width: 576px) {
+    --gap: 1rem;
+  }
+}
+
 * {
-  color: white;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background-color: #343a40;
+  color: white;
+  font-family: 'HelveticaNeueCyr';
+  font-weight: 200;
+
+  padding: var(--gap);
+}
+
+a{
+  text-decoration: none;
+  &:visited {
+    color: inherit;
+  }
 }

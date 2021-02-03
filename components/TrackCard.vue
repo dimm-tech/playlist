@@ -1,25 +1,14 @@
 <template>
-  <b-card class="mb-2" no-body bg-variant="transparent">
-    <b-row no-gutters>
-      <b-col cols="3" sm="2">
-        <b-card-img :src="trackInfo.albumImg"></b-card-img>
-      </b-col>
-      <b-col cols="8" sm="9" class="pt-1 pl-3 pr-1">
-        <b-card-title class="track-name overflow-hidden my-1" title-tag="p">{{
-          trackInfo.track
-        }}</b-card-title>
-        <b-card-sub-title sub-title-tag="p">{{
-          trackInfo.artist
-        }}</b-card-sub-title>
-      </b-col>
-      <b-col
-        cols="1"
-        class="track-duration d-inline-flex align-items-center justify-content-center pr-2"
-      >
-        {{ trackInfo.trackDuration }}
-      </b-col>
-    </b-row>
-  </b-card>
+  <div class="track">
+    <img :src="trackInfo.albumImg" />
+    <div class="track--info">
+      <div class="track--info-text">
+        <p class="track--info-name">{{ trackInfo.track }}</p>
+        <p class="track--info-artist">{{ trackInfo.artist }}</p>
+      </div>
+      <p class="track--info-duration">{{ trackInfo.trackDuration }}</p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -34,15 +23,58 @@ export default {
 </script>
 
 <style lang="scss">
+.track {
+  display: flex;
+  width: 100%;
+  img {
+    width: 15%;
+    object-fit: cover;
+  }
+  &--info {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+    border: 1px solid rgba(white, 0.0625);
+    border-left: none;
+    border-radius: 6px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    &-text {
+      width: 80%;
+      padding-top: .25rem;
+    }
+    &-name {
+      font-weight: normal;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-bottom: 0.25rem;
+    }
+    &-artist {
+      opacity: 0.5;
+    }
+    &-duration {
+      width: 20%;
+      align-self: center;
+      text-align: right;
+      font-size: 0.875rem;
+      opacity: 0.75;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+    .track--info {
+      background-color: rgba(#ffffff, 0.0625);
+    }
+  }
+}
+
 .track-name {
   white-space: nowrap;
   &_wrapper {
     overflow: hidden;
   }
-}
-
-.track-duration {
-  font-size: 12px;
 }
 
 .mrq {

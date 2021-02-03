@@ -20,14 +20,7 @@ export default {
   loading: {
     color: '#ff0000'
   },
-  modules: [
-    'bootstrap-vue/nuxt'
-  ],
-  modules: ['bootstrap-vue/nuxt'],
-  bootstrapVue: {
-    bootstrapCSS: false, // Or `css: false`
-    bootstrapVueCSS: false // Or `bvCSS: false`
-  },
+  modules: [],
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     '~assets/css/main.scss'

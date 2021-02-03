@@ -1,24 +1,21 @@
 <template>
-  <b-container class="search" fluid="xl" tag="section">
+  <section class="search">
     <router-link to="/">music</router-link>
     <h1 class="py-3">search for track info</h1>
-    <b-form-group>
-      <b-form-input
-        id="search-query"
-        v-model="query"
-        @input="search"
-        @change="longTrackNameHandler"
-      ></b-form-input>
-      <b-form-text>artist or track name</b-form-text>
-    </b-form-group>
+    <input
+      id="search-query"
+      v-model="query"
+      @input="search"
+      @change="longTrackNameHandler"
+    />
+    <span>artist or track name</span>
 
-    <b-col md="8 px-0">
       <track-card
+        class="track-card"
         v-for="(trackInfo, k) in items"
         :key="k"
         :prop="trackInfo"
       ></track-card>
-    </b-col>
 
     <!-- <section class="picked" v-if="isPicked">
       <div>
@@ -88,14 +85,11 @@
       <button class="toDB">to DataBase</button>
     </section> -->
 
-    <b-badge class="mb-2" variant="dark">file</b-badge>
-    <div class="input-file">
+    <!-- <div class="input-file">
       <input id="file" type="file" />
-      <b-btn size="sm" variant="primary">
         <label for="file">choose a file...</label>
-      </b-btn>
-    </div>
-  </b-container>
+    </div> -->
+  </section>
 </template>
 
 <script>
@@ -193,6 +187,25 @@ export default {
 
 <style lang="scss">
 .search {
+  max-width: 576px;
+  h1 {
+    margin: 1rem 0;
+  }
+  input {
+    width: 66.7%;
+    border: none;
+    border-radius: 6px;
+    padding: .25rem .5rem;
+    appearance: none;
+    outline: none;
+    margin-bottom: .25rem;
+  }
+  span {
+    display: block;
+    font-size: .75rem;
+    opacity: .5;
+    margin-bottom: 1.25rem;
+  }
   .input-file {
     input {
       width: 0;
@@ -204,4 +217,12 @@ export default {
     }
   }
 }
+
+.track-card {
+  max-width: 480px;
+  &:not(:first-of-type) {
+    margin-top: .5rem;
+  }
+}
+
 </style>
