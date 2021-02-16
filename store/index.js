@@ -2,27 +2,31 @@ import { db, storage } from '~/plugins/firebase.js'
 
 export const state = () => ({
   isLogin: false,
-  posts: [],
+  posts: []
 })
 
 export const actions = {
-  async loadFromDB({ commit }, dbTable) {
+  async loadFromDB({ commit }) {
     try {
-      await db.ref(dbTable).once('value').then((s) => {
-        commit('loadPosts', s.val())
-      })
+      await db
+        .ref()
+        .once('value')
+        .then(s => {
+          commit('loadPosts', s.val())
+        })
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   },
   infoToDB({ commit }, [table, timestamp, ...payload]) {
-    db.ref(`/${table}/${timestamp}`).set(...payload);
+    db.ref(`/${table}/${timestamp}`).set(...payload)
   },
   async fileToDB({ commit, dispatch }, [table, timestamp, file]) {
     await storage.ref(`${table}/${timestamp}`).put(file)
-    storage.ref(`${table}/${timestamp}`)
+    storage
+      .ref(`${table}/${timestamp}`)
       .getDownloadURL()
-      .then((url) => {
+      .then(url => {
         db.ref(`/${table}/${timestamp}`).update({ file: url })
       })
   },
@@ -31,7 +35,7 @@ export const actions = {
     let seconds = Math.floor((ms / 1000) % 60)
     seconds < 10 ? (seconds = `0${seconds}`) : seconds
     return `${minutes}:${seconds}`
-  },
+  }
 }
 
 export const mutations = {

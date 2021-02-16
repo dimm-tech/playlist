@@ -9,9 +9,9 @@
 </template>
 
 <style lang="scss">
-  .login {
-    text-align: center;
-  }
+.login {
+  text-align: center;
+}
 </style>
 
 <script>
@@ -20,22 +20,23 @@ export default {
   data() {
     return {
       email: '',
-      pass: '',
+      pass: ''
     }
   },
   methods: {
-    login: function () {
+    login: function() {
       auth
         .signInWithEmailAndPassword(this.email, this.pass)
         .then(() => {
           this.$store.commit('loggedIn')
-          this.$router.push({ path: '/add' })
+          this.$router.push({ path: '/' })
         })
-        .catch((err) => {
-          document.querySelector('.login').querySelector('p').innerHTML = err.message
+        .catch(err => {
+          document.querySelector('.login').querySelector('p').innerHTML =
+            err.message
           console.log(err.message)
         })
-    },
-  },
+    }
+  }
 }
 </script>

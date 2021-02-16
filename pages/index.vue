@@ -36,7 +36,6 @@
 </style>
 
 <script>
-import { storage } from '~/plugins/firebase.js'
 export default {
   data() {
     return {}
@@ -44,10 +43,10 @@ export default {
   computed: {
     posts() {
       return this.$store.state.posts
-    },
+    }
   },
   mounted() {
     this.$store.dispatch('loadFromDB')
-  },
+  }
 }
 </script>
