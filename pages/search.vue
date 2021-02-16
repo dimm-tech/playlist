@@ -27,7 +27,7 @@
         <input id="album" type="text" v-model.trim="tracks[0].album" />
 
         <label for="year">Год</label>
-        <input id="year" type="text" v-model.trim="tracks[0].album" />
+        <input id="year" type="text" v-model.trim="tracks[0].albumYear" />
 
         <div class="tags">
           <label for="tags">Тэги</label>
@@ -38,9 +38,8 @@
             <span class="delTag" @click="delTag">-</span>
           </div>
         </div>
+        <button class="toDB">to DataBase</button>
       </form>
-
-      <button class="toDB">to DataBase</button>
     </section>
 
     <!-- <div class="input-file">
@@ -55,24 +54,20 @@ import trackCard from '~/components/TrackCard.vue'
 
 export default {
   components: {
-    'track-card': trackCard
+    'track-card': trackCard,
   },
   data() {
     return {
       isPicked: false,
       query: '',
-      artist: '',
-      track: '',
-      trackDuration: '',
-      album: '',
       tags: [],
-      tracks: []
+      tracks: [],
     }
   },
   computed: {
-    tracksItems: function() {
+    tracksItems: function () {
       return this.tracks
-    }
+    },
   },
   methods: {
     search() {
@@ -81,18 +76,19 @@ export default {
       let self = this
       this.tracks = []
 
-      const getTrackByName = async query => {
+      const getTrackByName = async (query) => {
         query = encodeURI(query)
         const token = await self.$store.dispatch('spotify/getToken', [
           clientId,
-          clientSecret
+          clientSecret,
         ])
         const data = await self.$store.dispatch('spotify/searchTrack', [
           token,
-          query
+          query,
         ])
         const tracks = data['tracks'].items
-        tracks.forEach(async el => {
+        console.log(tracks);
+        tracks.forEach(async (el) => {
           self.tracks.push({
             artist: el.artists[0].name,
             track: el.name,
@@ -101,7 +97,8 @@ export default {
               el.duration_ms
             ),
             album: el.album.name,
-            albumImg: el.album.images[0].url
+            albumImg: el.album.images[0].url,
+            albumYear: el.album.release_date
           })
         })
       }
@@ -120,7 +117,7 @@ export default {
 
     longTrackNameHandler() {
       const trackName = document.querySelectorAll('.track-name')
-      trackName.forEach(el => {
+      trackName.forEach((el) => {
         const elWidth = el.offsetWidth
         const elText = el.innerText
         if (elWidth < elText.length * 8) {
@@ -134,9 +131,9 @@ export default {
           el.remove()
         }
       })
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 }
 </script>
 
@@ -169,6 +166,26 @@ export default {
     }
     label {
       margin: 0;
+    }
+  }
+}
+
+.picked {
+  display: flex;
+  align-items: flex-start;
+  img {
+    width: 40%;
+    height: auto;
+    object-fit: contain;
+  }
+  form {
+    width: 60%;
+    padding: 0 1rem;
+    label {
+      display: block;
+    }
+    input {
+      width: 100%;
     }
   }
 }
